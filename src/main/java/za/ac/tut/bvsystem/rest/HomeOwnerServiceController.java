@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import za.ac.tut.bvsystem.common.AddressDTO;
 import za.ac.tut.bvsystem.common.HomeOwnerDTO;
+import za.ac.tut.bvsystem.domain.AddressEntity;
 import za.ac.tut.bvsystem.domain.HomeOwnerEntity;
 import za.ac.tut.bvsystem.persistance.HomeOwnerRepository;
 
@@ -67,18 +68,53 @@ public class HomeOwnerServiceController {
     
     //POST Create home owner 
     @RequestMapping(value = "/homeOwner/{houseNumber}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    public ResponseEntity<Object> createHomeOwner(@RequestBody HomeOwnerEntity homeOwnerEntity)
+    public ResponseEntity<Object> createHomeOwner(@RequestBody HomeOwnerDTO homeOwnerDTO)
     {
-        homeOwnerRepository.save(homeOwnerEntity);
+        HomeOwnerEntity homeOwner = new HomeOwnerEntity();
+        homeOwner.setFirstname(homeOwnerDTO.getFirstname());
+        homeOwner.setLastname(homeOwnerDTO.getLastname());
+        homeOwner.setHouseNumber(homeOwnerDTO.getHouseNumber());
+        homeOwner.setId(homeOwnerDTO.getId());
+        homeOwner.setMobileNumber(homeOwnerDTO.getMobileNumber());
+        homeOwner.setDesignation(homeOwnerDTO.getDesignation());
+       
+        AddressEntity address = new AddressEntity();
+        address.setId(homeOwnerDTO.getAddress().getId());
+        address.setLine1(homeOwnerDTO.getAddress().getLine1());
+        address.setLine2(homeOwnerDTO.getAddress().getLine2());
+        address.setSuburb(homeOwnerDTO.getAddress().getSuburb());
+        address.setCode(homeOwnerDTO.getAddress().getCode());
+        
+        homeOwner.setAddress(address);
+        
+        homeOwnerRepository.save(homeOwner);
+      
         
         return new ResponseEntity<>("Home Owner Successfully created", HttpStatus.CREATED);
     }
     
     //Update Home Owner
     @RequestMapping(value = "/homeOwner/{houseNumber}",produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateHomeOwner(@PathVariable String HouseNumber, @RequestBody HomeOwnerEntity homeOwnerEntity)
+    public ResponseEntity<Object> updateHomeOwner(@PathVariable("houseNumber") String houseNumber, @RequestBody HomeOwnerDTO homeOwnerDTO)
     {
-        homeOwnerRepository.save(homeOwnerEntity);
+        HomeOwnerEntity homeOwner = homeOwnerRepository.findByHouseNumber(houseNumber);
+        homeOwner.setFirstname(homeOwnerDTO.getFirstname());
+        homeOwner.setLastname(homeOwnerDTO.getLastname());
+        homeOwner.setHouseNumber(homeOwnerDTO.getHouseNumber());
+        homeOwner.setId(homeOwnerDTO.getId());
+        homeOwner.setMobileNumber(homeOwnerDTO.getMobileNumber());
+        homeOwner.setDesignation(homeOwnerDTO.getDesignation());
+       
+        AddressEntity address = new AddressEntity();
+        address.setId(homeOwnerDTO.getAddress().getId());
+        address.setLine1(homeOwnerDTO.getAddress().getLine1());
+        address.setLine2(homeOwnerDTO.getAddress().getLine2());
+        address.setSuburb(homeOwnerDTO.getAddress().getSuburb());
+        address.setCode(homeOwnerDTO.getAddress().getCode());
+        
+        homeOwner.setAddress(address);
+        
+        homeOwnerRepository.save(homeOwner);
         
         return new ResponseEntity<>("Home owner successfully updated", HttpStatus.OK);
     }

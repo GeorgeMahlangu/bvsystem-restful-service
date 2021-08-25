@@ -58,5 +58,4 @@ public class AddressEntity implements Serializable{
     }
     
      
-    
 }
