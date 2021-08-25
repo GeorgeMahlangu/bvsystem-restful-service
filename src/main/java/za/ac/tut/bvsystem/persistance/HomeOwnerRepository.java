@@ -17,5 +17,5 @@ import za.ac.tut.bvsystem.domain.HomeOwnerEntity;
 public interface HomeOwnerRepository extends JpaRepository<HomeOwnerEntity, Long>
 {
     HomeOwnerEntity findByHouseNumber(String houseNumber);
-    
+    long deleteByHouseNumber(String houseNumber);
 }

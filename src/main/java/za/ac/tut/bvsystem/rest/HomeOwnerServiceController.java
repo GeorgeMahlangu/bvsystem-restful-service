@@ -121,15 +121,15 @@ public class HomeOwnerServiceController {
     
     //Delete Home Owner
     @RequestMapping(value = "/homeOwner/{houseNumber}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.DELETE)
-    public ResponseEntity<Object> deleteHomeOwner(@PathVariable String houseNumber)
+    public ResponseEntity<Object> deleteHomeOwner(@PathVariable("houseNumber") String houseNumber)
     {
        HomeOwnerEntity homeOwnerEntity = homeOwnerRepository.findByHouseNumber(houseNumber);
        homeOwnerRepository.delete(homeOwnerEntity);
-       
-       return new ResponseEntity<>("Home owner successfully deleted", HttpStatus.CREATED);
-    }
-    
         
- 
+       
+       
+       return new ResponseEntity<>("Home owner successfully deleted", HttpStatus.OK);
+    }
+
     
 }
